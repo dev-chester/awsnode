@@ -10,9 +10,9 @@ AWS.config.apiVersions = {
 // Hardcoded values
 // TODO change values
 var staticFilePath = "C:\\Users\\APPTech\\Desktop\\"; //file path to be uploaded
-var keyName = "Knowledge Transfer.pdf"; //filename
-var deleteFileKey = "Knowledge Transfer.pdf"; //filename
-var createNewBucket = "apptech-cpa-bucket";
+var keyName = "byd.txt"; //filename
+var deleteFileKey = "byd.txt"; //filename
+var createNewBucket = "apptech-koa-bucket";
 
 
 // Functions
@@ -31,6 +31,11 @@ const createBucket = function() {
 
 const uploadFile = function() {
     fs.readFile(`${staticFilePath}${keyName}`, (err, data) => {
+      if (err) {
+        console.log("error in reading file");
+        return;
+      }
+
       var objectParams = {Bucket: createNewBucket, Key: keyName, Body: data};
       var uploadPromise = new AWS.S3().putObject(objectParams).promise();
       uploadPromise.then( () => {
@@ -58,7 +63,21 @@ const deleteFile = function() {
 
 //getObject() Other Directory
 const downloadFile = function() {
-  //TODO whole function
+    var s3 = new AWS.S3();
+    var params = {Bucket: createNewBucket, Key: keyName};
+    var file = require('fs').createWriteStream(`${staticFilePath}${Date.now().toString()}-${keyName}`);
+    var s3Stream  = s3.getObject(params).createReadStream();
+
+    s3Stream.pipe(file)
+    .on('error', (err)=> {
+      console.log("Error in Download");
+      return;
+    })
+    .on('close', () => {
+      console.log("Success!");
+      return;
+    });
+
 }
 
 // Utils
@@ -68,7 +87,7 @@ const readline = require('readline').createInterface({
 });
 
 // Entry point
-readline.question('Enter \n [1] to Create Bucket \n [2] to Upload File \n [3] to Delete File \n  [4] to Download File \n : ', choice => {
+readline.question('Enter \n [1] to Create Bucket \n [2] to Upload File \n [3] to Delete File \n [4] to Download File \n : ', choice => {
   if (choice === "1") createBucket();
   if (choice === "2") uploadFile();
   if (choice === "3") deleteFile();
