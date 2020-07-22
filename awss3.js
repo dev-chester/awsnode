@@ -41,8 +41,6 @@ const uploadFile = function() {
     
 }
 
-
-
 const deleteFile = function() {
   var s3 = new AWS.S3();
 
@@ -56,11 +54,17 @@ const deleteFile = function() {
   })
 }
 
+const downloadFile = function() {
+  
+}
+
+// Utils
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
+// Entry point
 readline.question('Enter \n [1] to Create Bucket \n [2] to Upload File \n [3] to Delete File \n : ', choice => {
   if (choice === "1") createBucket();
   if (choice === "2") uploadFile();
