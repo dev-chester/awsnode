@@ -8,10 +8,12 @@ AWS.config.apiVersions = {
 };
 
 // Hardcoded values
-var staticFilePath = "C:\\Users\\APPTech\\Desktop\\";
-var keyName = "Knowledge Transfer.pdf";
+// TODO change values
+var staticFilePath = "C:\\Users\\APPTech\\Desktop\\"; //file path to be uploaded
+var keyName = "Knowledge Transfer.pdf"; //filename
+var deleteFileKey = "Knowledge Transfer.pdf"; //filename
 var createNewBucket = "apptech-cpa-bucket";
-var deleteFileKey = "Knowledge Transfer.pdf";
+
 
 // Functions
 const createBucket = function() {
@@ -54,8 +56,9 @@ const deleteFile = function() {
   })
 }
 
+//getObject() Other Directory
 const downloadFile = function() {
-  
+  //TODO whole function
 }
 
 // Utils
@@ -65,10 +68,11 @@ const readline = require('readline').createInterface({
 });
 
 // Entry point
-readline.question('Enter \n [1] to Create Bucket \n [2] to Upload File \n [3] to Delete File \n : ', choice => {
+readline.question('Enter \n [1] to Create Bucket \n [2] to Upload File \n [3] to Delete File \n  [4] to Download File \n : ', choice => {
   if (choice === "1") createBucket();
   if (choice === "2") uploadFile();
   if (choice === "3") deleteFile();
+  if (choice === "4") downloadFile();
   readline.close();
 });
 
